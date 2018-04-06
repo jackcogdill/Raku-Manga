@@ -11,13 +11,26 @@
     "scripts": {
         "client": "cd client && yarn start",
         "server": "nodemon server.js",
-        "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+        "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+        "lint": "eslint *.js client/src/App.js"
+    },
+    "eslintConfig": {
+        "env": {
+            "browser": true,
+            "node": true
+        }
     },
     "dependencies": {
         "express": "^4.16.3"
     },
     "devDependencies": {
+        "babel-eslint": "^8.2.2",
         "concurrently": "^3.5.1",
+        "eslint": "^4.19.1",
+        "eslint-config-airbnb": "^16.1.0",
+        "eslint-plugin-import": "^2.10.0",
+        "eslint-plugin-jsx-a11y": "^6.0.3",
+        "eslint-plugin-react": "^7.7.0",
         "nodemon": "^1.17.3"
     },
     "repository": {
