@@ -1,14 +1,6 @@
 # Raku Manga
 
-> Example on using create-react-app with a Node Express Backend
-
 ## Usage
-
-Install [nodemon](https://github.com/remy/nodemon) globally
-
-```
-npm i nodemon -g
-```
 
 Install server and client dependencies
 
@@ -36,6 +28,11 @@ This tells Webpack development server to proxy our API requests to our API serve
 
 ## Todo
 
-[ ] Handle out of range (first and last image in directory)
-[ ] Preload surrounding images so UI image change is instant
+- [ ] Handle out of range (first and last image in directory)
+- [ ] Preload surrounding images so UI image change is instant
+- [ ] Figure out how to make production version with `yarn build`
+- [ ] Save progress (maybe in `~/.rakumanga`?)
+- [ ] Add keyboard shortcuts (left, right, `h`, `l`) for next/prev
+- [ ] Add screenshots to readme
+- [ ] Detect volume and chapter number and display at the top of the page
 
