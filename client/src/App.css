@@ -1,28 +1,60 @@
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Ubuntu-Light', Ubuntu, sans-serif;
+    color: #F0F0F0;
+}
+
 .App {
-  text-align: center;
+    background: url(skewed_print.png) #000;
+    min-height: 100%;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.strip-wrap {
+    width: 70vw;
+    min-height: 90vh;
+    margin: 0 auto;
+    padding: 5vh 0;
+    background: #181818;
+    position: relative;
+    text-align: center;
+    font-size: 1.2rem;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.strip-img {
+    width: 100%;
+    margin: 20px 0;
+    box-shadow: 0 0 24px #222;
 }
 
-.App-title {
-  font-size: 1.5em;
+.side-next, .side-prev {
+    position: fixed;
+    top: 25vh;
+    height: 50vh;
+    width: 5rem;
+    background: rgba(24, 24, 24, 0.25);
+    border-radius: 0.5rem;
+    border: 1px solid #2E37FE;
+
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.App-intro {
-  font-size: large;
+.side-next:hover, .side-prev:hover {
+    cursor: pointer;
+    filter: hue-rotate(225deg);
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.side-prev {
+    left: 15vw;
+    margin-left: -7rem;
 }
+
+.side-next {
+    right: 15vw;
+    margin-right: -7rem;
+}
+

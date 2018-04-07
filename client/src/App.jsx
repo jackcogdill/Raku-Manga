@@ -1,31 +1,56 @@
 import React, { Component } from 'react';
+
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight'
+import faAngleLeft from '@fortawesome/fontawesome-free-solid/faAngleLeft'
+
 import './App.css';
+
+class SideButton extends Component {
+    render() {
+        const { dir } = this.props;
+        const next = (dir === 'next');
+        const className = next ? 'side-next' : 'side-prev';
+        const icon = next ? faAngleRight : faAngleLeft;
+
+        return (
+            <div className={className} onClick={this.props.onClick} >
+                <FontAwesomeIcon icon={icon} color='#2E37FE' />
+            </div>
+        );
+    }
+}
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: '',
+            image: '',
             n: 0,
         };
     }
 
     get = (n) => {
         this.callApi(n)
-            .then(res => this.setState({ response: res.data }))
+            .then(res => {
+                this.setState({ image: res.data });
+                window.scrollTo(0, 0);
+            })
             .catch(err => console.log(err));
     }
 
-    next = () => {
+    update = (diff) => {
         const { n } = this.state;
-        this.setState({ n: n + 1 })
-        this.get(n + 1);
+        this.setState({ n: n + diff })
+        this.get(n + diff);
+    }
+
+    next = () => {
+        this.update(1);
     }
 
     prev = () => {
-        const { n } = this.state;
-        this.setState({ n: n - 1 })
-        this.get(n - 1);
+        this.update(-1);
     }
 
     componentDidMount() {
@@ -43,11 +68,17 @@ class App extends Component {
     };
 
     render() {
+        const { image } = this.state;
         return (
-            <div className="App">
-                <button onClick={this.prev}>Prev</button>
-                <img style={{'width': '50%'}} src={`/images/${this.state.response}`} alt="test" />
-                <button onClick={this.next}>Next</button>
+            <div className='App'>
+                <div className='strip-wrap'>
+                    <SideButton dir='prev' onClick={this.prev} />
+                    {image
+                        ? <img className='strip-img' alt={'test'} src={`/images/${image}`} />
+                        : <div>Loading...</div>
+                    }
+                    <SideButton dir='next' onClick={this.next} />
+                </div>
             </div>
         );
     }
