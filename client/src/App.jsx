@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -7,17 +6,35 @@ class App extends Component {
         super(props);
         this.state = {
             response: '',
+            n: 0,
         };
     }
 
-    componentDidMount() {
-        this.callApi()
+    get = (n) => {
+        this.callApi(n)
             .then(res => this.setState({ response: res.data }))
             .catch(err => console.log(err));
     }
 
-    callApi = async () => {
-        const response = await fetch('/api/manga');
+    next = () => {
+        const { n } = this.state;
+        this.setState({ n: n + 1 })
+        this.get(n + 1);
+    }
+
+    prev = () => {
+        const { n } = this.state;
+        this.setState({ n: n - 1 })
+        this.get(n - 1);
+    }
+
+    componentDidMount() {
+        const { n } = this.state;
+        this.get(n);
+    }
+
+    callApi = async (n) => {
+        const response = await fetch(`/api/manga?n=${n}`);
         const body = await response.json();
 
         if (response.status !== 200) throw Error(body.message);
@@ -28,11 +45,9 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">{this.state.response}</p>
+                <button onClick={this.prev}>Prev</button>
+                <img style={{'width': '50%'}} src={`/images/${this.state.response}`} alt="test" />
+                <button onClick={this.next}>Next</button>
             </div>
         );
     }

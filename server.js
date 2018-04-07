@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const glob = require('glob');
 const argv = require('minimist')(process.argv.slice(2));
 const sort = require('./sort');
@@ -6,17 +7,27 @@ const sort = require('./sort');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
-const pattern = `${argv.dir}/*@(${formats.join('|')})`;
+// Serve images from specified directory
+app.use('/images', express.static(argv.dir));
 
-console.dir(argv);
+function findImages() {
+    const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
+    const pattern = `${argv.dir}/*@(${formats.join('|')})`;
 
-app.get('/api/manga', (req, res) => {
     glob(pattern, {}, (err, files) => { // Options is optional
         files.sort(sort.numCompare);
-        res.send({
-            data: JSON.stringify(files, null, 4),
-        });
+        files = files.map(f => path.basename(f));
+        global.files = files;
+    });
+}
+
+findImages();
+
+app.get('/api/manga', (req, res) => {
+    const n = req.query.n;
+    const image = global.files[n];
+    res.send({
+        data: encodeURIComponent(image)
     });
 });
 
