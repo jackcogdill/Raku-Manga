@@ -16,18 +16,17 @@ function findImages() {
 
     glob(pattern, {}, (err, files) => { // Options is optional
         files.sort(sort.numCompare);
-        files = files.map(f => path.basename(f));
-        global.files = files;
+        global.files = files.map(f => path.basename(f));
     });
 }
 
 findImages();
 
 app.get('/api/manga', (req, res) => {
-    const n = req.query.n;
+    const { n } = req.query;
     const image = global.files[n];
     res.send({
-        data: encodeURIComponent(image)
+        data: encodeURIComponent(image),
     });
 });
 
