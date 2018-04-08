@@ -26,6 +26,7 @@ html, body, #root {
     width: 100%;
     margin: 20px 0;
     box-shadow: 0 0 24px #222;
+    user-select: none;
 }
 
 .side-button {
