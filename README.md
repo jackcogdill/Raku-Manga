@@ -28,7 +28,7 @@ This tells Webpack development server to proxy our API requests to our API serve
 
 ## Todo
 
-- [ ] Handle out of range (first and last image in directory)
+- [x] Handle out of range (first and last image in directory)
 - [ ] Preload surrounding images so UI image change is instant
 - [ ] Figure out how to make production version with `yarn build`
 - [ ] Save progress (maybe in `~/.rakumanga`?)

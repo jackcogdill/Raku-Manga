@@ -30,19 +30,27 @@ class App extends Component {
         };
     }
 
-    get = (n) => {
-        this.callApi(n)
-            .then(res => {
-                this.setState({ image: res.data });
-                window.scrollTo(0, 0);
-            })
-            .catch(err => console.log(err));
-    }
+    callApi = async (n) => {
+        const response = await fetch(`/api/manga?n=${n}`);
+        const body = await response.json();
+
+        if (response.status !== 200) throw Error(body.message);
+        if (body.error) throw Error(body.error);
+
+        return body;
+    };
 
     update = (diff) => {
         const { n } = this.state;
-        this.setState({ n: n + diff })
-        this.get(n + diff);
+        this.callApi(n + diff)
+            .then(res => {
+                this.setState({
+                    image: res.data,
+                    n: n + diff,
+                });
+                window.scrollTo(0, 0);
+            })
+            .catch(err => console.log(err));
     }
 
     next = () => {
@@ -54,18 +62,8 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const { n } = this.state;
-        this.get(n);
+        this.update(0);
     }
-
-    callApi = async (n) => {
-        const response = await fetch(`/api/manga?n=${n}`);
-        const body = await response.json();
-
-        if (response.status !== 200) throw Error(body.message);
-
-        return body;
-    };
 
     render() {
         const { image } = this.state;

@@ -24,6 +24,14 @@ findImages();
 
 app.get('/api/manga', (req, res) => {
     const { n } = req.query;
+
+    if (n < 0 || n >= global.files.length) {
+        res.send({
+            error: `No such file index: ${n}`,
+        });
+        return;
+    }
+
     const image = global.files[n];
     res.send({
         data: encodeURIComponent(image),
