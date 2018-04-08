@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 // Serve images from specified directory
 app.use('/images', express.static(argv.dir));
 
-function findImages() {
+const findImages = () => {
     const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
     const pattern = `${argv.dir}/*@(${formats.join('|')})`;
 
@@ -18,14 +18,17 @@ function findImages() {
         files.sort(sort.numCompare);
         global.files = files.map(f => path.basename(f));
     });
-}
+};
 
 findImages();
 
-app.get('/api/manga', (req, res) => {
-    const { n } = req.query;
+const inbounds = n => n >= 0 && n < global.files.length;
 
-    if (n < 0 || n >= global.files.length) {
+app.get('/api/manga', (req, res) => {
+    const { n: strN } = req.query;
+    const n = Number(strN);
+
+    if (!inbounds(n)) {
         res.send({
             error: `No such file index: ${n}`,
         });
@@ -35,6 +38,8 @@ app.get('/api/manga', (req, res) => {
     const image = global.files[n];
     res.send({
         data: encodeURIComponent(image),
+        hasPrev: inbounds(n - 1),
+        hasNext: inbounds(n + 1),
     });
 });
 

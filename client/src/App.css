@@ -28,7 +28,7 @@ html, body, #root {
     box-shadow: 0 0 24px #222;
 }
 
-.side-next, .side-prev {
+.side-button {
     position: fixed;
     top: 25vh;
     height: 50vh;
@@ -43,7 +43,12 @@ html, body, #root {
     align-items: center;
 }
 
-.side-next:hover, .side-prev:hover {
+.side-button[disabled], .side-button[disabled]:hover {
+    cursor: not-allowed;
+    filter: grayscale(90%);
+}
+
+.side-button:hover {
     cursor: pointer;
     filter: hue-rotate(225deg);
 }

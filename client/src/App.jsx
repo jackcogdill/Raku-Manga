@@ -1,37 +1,17 @@
 /* eslint arrow-parens: 0 */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
-
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight';
-import faAngleLeft from '@fortawesome/fontawesome-free-solid/faAngleLeft';
+import SideButton from './SideButton';
 
 import './App.css';
-
-const SideButton = (props) => {
-    const { dir, onClick } = props;
-    const next = (dir === 'next');
-    const className = next ? 'side-next' : 'side-prev';
-    const icon = next ? faAngleRight : faAngleLeft;
-
-    return (
-        <button className={className} onClick={onClick}>
-            <FontAwesomeIcon icon={icon} color="#2E37FE" />
-        </button>
-    );
-};
-
-SideButton.propTypes = {
-    dir: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-};
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             image: '',
+            hasPrev: false,
+            hasNext: false,
             n: 0,
         };
     }
@@ -61,6 +41,8 @@ class App extends Component {
             .then(res => {
                 this.setState({
                     image: res.data,
+                    hasPrev: res.hasPrev,
+                    hasNext: res.hasNext,
                     n: n + diff,
                 });
                 window.scrollTo(0, 0);
@@ -92,16 +74,18 @@ class App extends Component {
     }
 
     render() {
-        const { image } = this.state;
+        const { state, prev, next } = this;
+        const { image, hasPrev, hasNext } = state;
+
         return (
             <div className="App">
                 <div className="strip-wrap">
-                    <SideButton dir="prev" onClick={this.prev} />
+                    <SideButton dir="prev" onClick={prev} disabled={!hasPrev} />
                     {image
                         ? <img className="strip-img" alt="test" src={`/images/${image}`} />
                         : <div>Loading...</div>
                     }
-                    <SideButton dir="next" onClick={this.next} />
+                    <SideButton dir="next" onClick={next} disabled={!hasNext} />
                 </div>
             </div>
         );
