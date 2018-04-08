@@ -33,7 +33,7 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [ ] Preload surrounding images so UI image change is instant
 - [ ] Figure out how to make production version with `yarn build`
 - [ ] Save progress (maybe in `~/.rakumanga`?)
-- [ ] Add keyboard shortcuts (left, right, `h`, `l`) for next/prev
+- [x] Add keyboard shortcuts (left, right, `h`, `l`) for next/prev
 - [ ] Add screenshots to readme
 - [ ] Detect volume and chapter number and display at the top of the page
 

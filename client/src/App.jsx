@@ -61,6 +61,29 @@ class App extends Component {
         this.update(-1);
     }
 
+    handleKeyDown = (e) => {
+        switch(e.keyCode) {
+            case 37: // Left arrow
+            case 72: // h
+                this.prev();
+                break;
+            case 39: // Right arrow
+            case 76: // l
+                this.next();
+                break;
+            default:
+                break;
+        }
+    }
+
+    componentWillMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    }
+
     componentDidMount() {
         this.update(0);
     }
