@@ -10,6 +10,7 @@ class App extends Component {
         super(props);
         this.state = {
             image: '',
+            title: '',
             hasPrev: false,
             hasNext: false,
             n: 0,
@@ -41,6 +42,7 @@ class App extends Component {
             .then(res => {
                 this.setState({
                     image: res.data,
+                    title: res.title,
                     hasPrev: res.hasPrev,
                     hasNext: res.hasNext,
                     n: n + diff,
@@ -75,14 +77,14 @@ class App extends Component {
 
     render() {
         const { state, prev, next } = this;
-        const { image, hasPrev, hasNext } = state;
+        const { image, title, hasPrev, hasNext } = state;
 
         return (
             <div className="App">
                 <div className="strip-wrap">
                     <SideButton dir="prev" onClick={prev} disabled={!hasPrev} />
                     {image
-                        ? <img className="strip-img" alt="test" src={`/images/${image}`} />
+                        ? <img className="strip-img" alt={title} title={title} src={`/images/${image}`} />
                         : <div>Loading...</div>
                     }
                     <SideButton dir="next" onClick={next} disabled={!hasNext} />

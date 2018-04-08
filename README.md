@@ -36,6 +36,6 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [x] Add keyboard shortcuts (left, right, `h`, `l`) for next/prev
 - [ ] Add screenshots to readme
 - [ ] Detect volume and chapter number and display at the top of the page
-- [ ] Put correct image alt text
+- [x] Put correct image alt text
 - [ ] Use css vendor prefixes
 
