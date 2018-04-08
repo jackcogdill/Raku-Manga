@@ -1,25 +1,31 @@
+/* eslint arrow-parens: 0 */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import fetch from 'isomorphic-fetch';
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight'
-import faAngleLeft from '@fortawesome/fontawesome-free-solid/faAngleLeft'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight';
+import faAngleLeft from '@fortawesome/fontawesome-free-solid/faAngleLeft';
 
 import './App.css';
 
-class SideButton extends Component {
-    render() {
-        const { dir } = this.props;
-        const next = (dir === 'next');
-        const className = next ? 'side-next' : 'side-prev';
-        const icon = next ? faAngleRight : faAngleLeft;
+const SideButton = (props) => {
+    const { dir, onClick } = props;
+    const next = (dir === 'next');
+    const className = next ? 'side-next' : 'side-prev';
+    const icon = next ? faAngleRight : faAngleLeft;
 
-        return (
-            <div className={className} onClick={this.props.onClick} >
-                <FontAwesomeIcon icon={icon} color='#2E37FE' />
-            </div>
-        );
-    }
-}
+    return (
+        <button className={className} onClick={onClick}>
+            <FontAwesomeIcon icon={icon} color="#2E37FE" />
+        </button>
+    );
+};
+
+SideButton.propTypes = {
+    dir: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+};
 
 class App extends Component {
     constructor(props) {
@@ -28,6 +34,15 @@ class App extends Component {
             image: '',
             n: 0,
         };
+    }
+
+    componentDidMount() {
+        this.update(0);
+        document.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyDown);
     }
 
     callApi = async (n) => {
@@ -62,7 +77,7 @@ class App extends Component {
     }
 
     handleKeyDown = (e) => {
-        switch(e.keyCode) {
+        switch (e.keyCode) {
             case 37: // Left arrow
             case 72: // h
                 this.prev();
@@ -76,29 +91,17 @@ class App extends Component {
         }
     }
 
-    componentWillMount() {
-        window.addEventListener('keydown', this.handleKeyDown);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyDown);
-    }
-
-    componentDidMount() {
-        this.update(0);
-    }
-
     render() {
         const { image } = this.state;
         return (
-            <div className='App'>
-                <div className='strip-wrap'>
-                    <SideButton dir='prev' onClick={this.prev} />
+            <div className="App">
+                <div className="strip-wrap">
+                    <SideButton dir="prev" onClick={this.prev} />
                     {image
-                        ? <img className='strip-img' alt={'test'} src={`/images/${image}`} />
+                        ? <img className="strip-img" alt="test" src={`/images/${image}`} />
                         : <div>Loading...</div>
                     }
-                    <SideButton dir='next' onClick={this.next} />
+                    <SideButton dir="next" onClick={this.next} />
                 </div>
             </div>
         );
