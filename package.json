@@ -12,7 +12,7 @@
         "client": "cd client && yarn start",
         "server": "nodemon server.js",
         "dev": "bash -c 'concurrently --kill-others-on-fail \"yarn client\" \"yarn server `echo -n \\\\\"${0}\\\\\" \\ ; while (( \"$#\" )); do echo -n \\\\\"$1\\\\\" \\ ; shift; done`\"'",
-        "lint": "eslint *.js client/src/App.jsx"
+        "lint": "eslint *.js && eslint client/src/*.jsx"
     },
     "eslintConfig": {
         "env": {

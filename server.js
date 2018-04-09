@@ -14,8 +14,8 @@ const findImages = () => {
     const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
     const pattern = `*@(${formats.join('|')})`;
     const options = {
-        'cwd': argv.dir,
-        'matchBase': true,
+        cwd: argv.dir,
+        matchBase: true,
     };
     // matchBase is equivalent to **/patt
 
