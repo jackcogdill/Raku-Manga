@@ -61,6 +61,10 @@ html, body, #root {
     filter: hue-rotate(225deg);
 }
 
+.side-button:focus {
+    outline: none;
+}
+
 .side-prev {
     left: 15vw;
     margin-left: -7rem;
