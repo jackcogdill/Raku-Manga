@@ -40,9 +40,13 @@ app.get('/api/manga', (req, res) => {
     }
 
     const image = global.files[n];
+    const p = path.parse(image);
+    const header = p.dir ? `${p.dir}/${p.name}` : p.name;
+
     res.send({
         data: encodeURIComponent(image),
-        title: path.parse(image).name,
+        title: p.name,
+        header,
         hasPrev: inbounds(n - 1),
         hasNext: inbounds(n + 1),
     });

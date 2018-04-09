@@ -11,6 +11,7 @@ class App extends Component {
         this.state = {
             image: '',
             title: '',
+            header: '',
             hasPrev: false,
             hasNext: false,
             n: 0,
@@ -43,6 +44,7 @@ class App extends Component {
                 this.setState({
                     image: res.data,
                     title: res.title,
+                    header: res.header,
                     hasPrev: res.hasPrev,
                     hasNext: res.hasNext,
                     n: n + diff,
@@ -77,12 +79,13 @@ class App extends Component {
 
     render() {
         const { state, prev, next } = this;
-        const { image, title, hasPrev, hasNext } = state;
+        const { image, title, header, hasPrev, hasNext } = state;
 
         return (
             <div className="App">
                 <div className="strip-wrap">
                     <SideButton dir="prev" onClick={prev} disabled={!hasPrev} />
+                    <div className="strip-header">{header}</div>
                     {image
                         ? <img className="strip-img" alt={title} title={title} src={`/images/${image}`} />
                         : <div>Loading...</div>

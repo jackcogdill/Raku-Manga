@@ -29,6 +29,13 @@ html, body, #root {
     user-select: none;
 }
 
+.strip-header {
+    padding: 0 1em;
+    text-align: left;
+    font-size: 1.5em;
+    color: #2E37FE;
+}
+
 .side-button {
     position: fixed;
     top: 25vh;
