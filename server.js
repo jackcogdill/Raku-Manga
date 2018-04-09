@@ -12,16 +12,20 @@ app.use('/images', express.static(argv.dir));
 
 const findImages = () => {
     const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
-    const pattern = `${argv.dir}/*@(${formats.join('|')})`;
+    const pattern = `*@(${formats.join('|')})`;
+    const options = {
+        'cwd': argv.dir,
+        'matchBase': true,
+    };
+    // matchBase is equivalent to **/patt
 
-    glob(pattern, {}, (err, files) => { // Options is optional
+    glob(pattern, options, (err, files) => {
         files.sort(sort.numCompare);
-        global.files = files.map(f => path.basename(f));
+        global.files = files;
     });
 };
 
 findImages();
-
 const inbounds = n => n >= 0 && n < global.files.length;
 
 app.get('/api/manga', (req, res) => {
