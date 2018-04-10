@@ -91,7 +91,6 @@ class App extends Component {
                         pageStart={0}
                         loadMore={next}
                         hasMore={hasNext}
-                        loader={<div className="loader" key={0}>Loading...</div>}
                     >
                         {images}
                     </InfiniteScroll>

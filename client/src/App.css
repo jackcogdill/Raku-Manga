@@ -15,11 +15,7 @@ html, body, #root {
     width: 70vw;
     min-height: 90vh;
     margin: 0 auto;
-    padding: 5vh 0;
-    background: #181818;
     position: relative;
-    text-align: center;
-    font-size: 1.2rem;
 }
 
 .strip-img {
