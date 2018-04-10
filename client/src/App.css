@@ -23,17 +23,9 @@ html, body, #root {
 }
 
 .strip-img {
+    display: block;
     width: 100%;
-    margin: 20px 0;
-    box-shadow: 0 0 24px #222;
     user-select: none;
-}
-
-.strip-header {
-    padding: 0 1em;
-    text-align: left;
-    font-size: 1.5em;
-    color: #2E37FE;
 }
 
 .side-button {

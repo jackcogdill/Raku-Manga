@@ -1,7 +1,7 @@
 /* eslint arrow-parens: 0 */
 import React, { Component } from 'react';
 import fetch from 'isomorphic-fetch';
-import SideButton from './SideButton';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import './App.css';
 
@@ -9,8 +9,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: '',
-            title: '',
+            images: [],
             header: '',
             hasPrev: false,
             hasNext: false,
@@ -41,15 +40,19 @@ class App extends Component {
         const { n } = this.state;
         this.callApi(n + diff)
             .then(res => {
-                this.setState({
-                    image: res.data,
-                    title: res.title,
-                    header: res.header,
-                    hasPrev: res.hasPrev,
-                    hasNext: res.hasNext,
+                console.dir(res);
+                const { data, title, header, hasPrev, hasNext } = res;
+                const image = (
+                    <img className="strip-img" alt={title} title={title} src={`/images/${data}`} />
+                );
+
+                this.setState(prevState => ({
+                    images: [...prevState.images, image],
+                    header,
+                    hasPrev,
+                    hasNext,
                     n: n + diff,
-                });
-                window.scrollTo(0, 0);
+                }));
             })
             .catch(err => console.log(err));
     }
@@ -79,18 +82,19 @@ class App extends Component {
 
     render() {
         const { state, prev, next } = this;
-        const { image, title, header, hasPrev, hasNext } = state;
+        const { images, hasPrev, hasNext } = state;
 
         return (
             <div className="App">
                 <div className="strip-wrap">
-                    <SideButton dir="prev" onClick={prev} disabled={!hasPrev} />
-                    <div className="strip-header">{header}</div>
-                    {image
-                        ? <img className="strip-img" alt={title} title={title} src={`/images/${image}`} />
-                        : <div>Loading...</div>
-                    }
-                    <SideButton dir="next" onClick={next} disabled={!hasNext} />
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={next}
+                        hasMore={hasNext}
+                        loader={<div className="loader" key={0}>Loading...</div>}
+                    >
+                        {images}
+                    </InfiniteScroll>
                 </div>
             </div>
         );
