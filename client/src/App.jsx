@@ -62,6 +62,7 @@ class App extends Component {
     render() {
         const { state, prev, next } = this;
         const { images, hasPrev, hasNext } = state;
+        const height = window.innerHeight;
 
         return (
             <div className="App">
@@ -70,6 +71,7 @@ class App extends Component {
                         pageStart={0}
                         loadMore={next}
                         hasMore={hasNext}
+                        threshold={height}
                     >
                         {images}
                     </InfiniteScroll>
