@@ -19,11 +19,6 @@ class App extends Component {
 
     componentDidMount() {
         this.update(0);
-        document.addEventListener('keydown', this.handleKeyDown);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKeyDown);
     }
 
     callApi = async (n) => {
@@ -40,7 +35,6 @@ class App extends Component {
         const { n } = this.state;
         this.callApi(n + diff)
             .then(res => {
-                console.dir(res);
                 const { data, title, header, hasPrev, hasNext } = res;
                 const image = (
                     <img className="strip-img" alt={title} title={title} src={`/images/${data}`} />
@@ -63,21 +57,6 @@ class App extends Component {
 
     prev = () => {
         this.update(-1);
-    }
-
-    handleKeyDown = (e) => {
-        switch (e.keyCode) {
-            case 37: // Left arrow
-            case 72: // h
-                this.prev();
-                break;
-            case 39: // Right arrow
-            case 76: // l
-                this.next();
-                break;
-            default:
-                break;
-        }
     }
 
     render() {
