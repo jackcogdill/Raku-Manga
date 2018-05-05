@@ -74,8 +74,6 @@ class App extends Component {
             hasNext,
             n: newN,
         }));
-
-        // cookies.set('Progress', newN, { path: '/' });
     }
 
     next = () => this.update(1);

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 class Info extends Component {
     constructor(props) {
@@ -38,6 +41,8 @@ class Info extends Component {
             info: el.title,
             prev: n,
         });
+
+        cookies.set('Progress', n, { path: '/' });
     }
 
     render() {
