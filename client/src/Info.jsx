@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Info extends Component {
+    static propTypes = {
+        onItem: PropTypes.func,
+        initialInfo: PropTypes.string,
+    };
+
+    static defaultProps = {
+        onItem: null,
+        initialInfo: null,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -13,7 +24,6 @@ class Info extends Component {
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
         window.addEventListener('resize', this.handleScroll);
-
     }
 
     componentWillUnmount() {
@@ -39,7 +49,10 @@ class Info extends Component {
             prev: n,
         });
 
-        this.props.onItem(n);
+        const { onItem } = this.props;
+        if (onItem) {
+            onItem(n);
+        }
     }
 
     render() {
