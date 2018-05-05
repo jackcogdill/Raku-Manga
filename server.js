@@ -50,7 +50,7 @@ app.get('/api/manga', (req, res) => {
     const header = p.dir ? `${p.dir}/${p.name}` : p.name;
 
     res.send({
-        data: encodeURIComponent(image),
+        file: encodeURIComponent(image),
         title: p.name,
         header,
         hasPrev: inbounds(n - 1),

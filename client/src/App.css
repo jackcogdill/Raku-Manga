@@ -11,55 +11,24 @@ html, body, #root {
     min-height: 100%;
 }
 
-.strip-wrap {
+.raku-wrap {
     width: 70vw;
     min-height: 90vh;
     margin: 0 auto;
     position: relative;
 }
 
-.strip-img {
+.raku-img {
     display: block;
     width: 100%;
     user-select: none;
 }
 
-.side-button {
+.raku-info {
     position: fixed;
-    top: 25vh;
-    height: 50vh;
-    width: 5rem;
-    background: rgba(24, 24, 24, 0.25);
-    border-radius: 0.5rem;
-    border: 1px solid #2E37FE;
-
-    font-size: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    bottom: 15vh;
+    left: 12vw;
+    transform-origin: top left;
+    transform: rotate(-90deg);
+    font-size: 1em;
 }
-
-.side-button[disabled], .side-button[disabled]:hover {
-    cursor: not-allowed;
-    filter: grayscale(90%);
-}
-
-.side-button:hover {
-    cursor: pointer;
-    filter: hue-rotate(225deg);
-}
-
-.side-button:focus {
-    outline: none;
-}
-
-.side-prev {
-    left: 15vw;
-    margin-left: -7rem;
-}
-
-.side-next {
-    right: 15vw;
-    margin-right: -7rem;
-}
-
