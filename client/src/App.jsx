@@ -116,7 +116,7 @@ class App extends Component {
         const { file, title, header, hasPrev, hasNext } = res;
         const image = (
             <img
-                className="strip-img"
+                className="raku-img"
                 key={n}
                 alt={title}
                 title={title}
@@ -141,7 +141,7 @@ class App extends Component {
         return (
             <div className="App">
                 <Info onItem={this.onItem} />
-                <div className="strip-wrap">
+                <div className="raku-wrap">
                     <Images getItem={this.getItem} first={this.firstPrev} isReverse={true} />
                     <Images getItem={this.getItem} first={this.firstNext} />
                 </div>

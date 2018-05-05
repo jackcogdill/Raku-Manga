@@ -47,7 +47,7 @@ class Info extends Component {
         const { info } = this.state;
 
         return (
-            <div className="strip-info">
+            <div className="raku-info">
                 {info || initialInfo}
             </div>
         );
