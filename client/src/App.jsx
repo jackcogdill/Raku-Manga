@@ -133,10 +133,14 @@ class App extends Component {
         };
     }
 
+    onItem(n) {
+        cookies.set('Progress', n, { path: '/' });
+    }
+
     render() {
         return (
             <div className="App">
-                <Info />
+                <Info onItem={this.onItem} />
                 <div className="strip-wrap">
                     <Images getItem={this.getItem} first={this.firstPrev} isReverse={true} />
                     <Images getItem={this.getItem} first={this.firstNext} />
