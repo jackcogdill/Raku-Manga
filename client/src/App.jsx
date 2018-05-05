@@ -113,7 +113,7 @@ class App extends Component {
             return null;
         }
 
-        const { data, title, header, hasPrev, hasNext } = res;
+        const { file, title, header, hasPrev, hasNext } = res;
         const image = (
             <img
                 className="strip-img"
@@ -121,7 +121,7 @@ class App extends Component {
                 alt={title}
                 title={title}
                 header={header}
-                src={`/images/${data}`}
+                src={`/images/${file}`}
                 n={n}
             />
         );
