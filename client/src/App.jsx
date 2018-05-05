@@ -9,16 +9,80 @@ import './App.css';
 
 const cookies = new Cookies();
 
-class App extends Component {
+class Images extends Component {
+    static defaultProps = {
+        isReverse: false,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
             images: [],
-            hasPrev: false,
-            hasNext: false,
-            n: 0,
-            initialInfo: '',
+            hasMore: true,
+            n: props.first,
         };
+        this.update = this.update.bind(this);
+    }
+
+    async update() {
+        const { n } = this.state;
+        const { getItem, isReverse } = this.props;
+
+        const item = await getItem(n);
+        if (item === null) {
+            this.setState({
+                hasMore: false,
+            });
+        }
+        else {
+            const { hasPrev, hasNext, image } = item;
+            this.setState(prevState => ({
+                images: isReverse ? [image, ...prevState.images] : [...prevState.images, image],
+                hasMore: isReverse ? hasPrev : hasNext,
+                n: n + (isReverse ? -1 : 1),
+            }));
+        }
+    }
+
+    fixScroll() {
+        const doc = document.documentElement || document.body.parentNode || document.body;
+        const scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : doc.scrollTop;
+
+        if (scrollTop === 0) {
+            window.scrollTo(0, 1);
+        }
+    }
+
+    render() {
+        const { state, props, update } = this;
+        const { images, hasMore } = state;
+        const { isReverse } = props;
+
+        if (isReverse) {
+            // Do not load previous images infinitely
+            this.fixScroll();
+        }
+
+        return (
+            <InfiniteScroll
+                isReverse={isReverse}
+                hasMore={hasMore}
+                loadMore={update}
+                threshold={window.innerHeight}
+            >
+                {images}
+            </InfiniteScroll>
+        );
+    }
+}
+
+class App extends Component {
+    constructor(props) {
+        super(props);
+
+        const progress = Number(cookies.get('Progress')) || 0;
+        this.firstPrev = progress;
+        this.firstNext = progress + 1;
     }
 
     async componentDidMount() {
@@ -27,38 +91,6 @@ class App extends Component {
         if ('scrollRestoration' in window.history) {
             window.history.scrollRestoration = 'manual';
         }
-
-        const progress = Number(cookies.get('Progress')) || 0;
-
-        let res;
-        try {
-            res = await this.callApi(progress);
-        }
-        catch (err) {
-            console.log(err);
-            return;
-        }
-
-        const { data, title, header, hasPrev, hasNext } = res;
-        const image = (
-            <img
-                className="strip-img"
-                alt={title}
-                title={title}
-                header={header}
-                src={`/images/${data}`}
-                key={progress}
-                n={progress}
-            />
-        );
-
-        this.setState(prevState => ({
-            images: [...prevState.images, image],
-            hasPrev,
-            hasNext,
-            n: progress,
-            initialInfo: header,
-        }));
     }
 
     callApi = async (n) => {
@@ -71,57 +103,43 @@ class App extends Component {
         return body;
     };
 
-    update = async (diff) => {
-        const { n } = this.state;
-        const newN = n + diff;
-
+    getItem = async (n) => {
         let res;
         try {
-            res = await this.callApi(newN);
+            res = await this.callApi(n);
         }
         catch (err) {
             console.log(err);
-            return;
+            return null;
         }
 
         const { data, title, header, hasPrev, hasNext } = res;
         const image = (
             <img
                 className="strip-img"
+                key={n}
                 alt={title}
                 title={title}
                 header={header}
                 src={`/images/${data}`}
-                key={newN}
-                n={newN}
+                n={n}
             />
         );
 
-        this.setState(prevState => ({
-            images: [...prevState.images, image],
+        return {
             hasPrev,
             hasNext,
-            n: newN,
-        }));
+            image,
+        };
     }
 
-    next = () => this.update(1);
-
-    prev = () => this.update(-1);
-
     render() {
-        const { images, hasPrev, hasNext, initialInfo } = this.state;
         return (
             <div className="App">
-                <Info initialInfo={initialInfo} />
+                <Info />
                 <div className="strip-wrap">
-                    <InfiniteScroll
-                        hasMore={hasNext}
-                        loadMore={this.next}
-                        threshold={window.innerHeight}
-                    >
-                        {images}
-                    </InfiniteScroll>
+                    <Images getItem={this.getItem} first={this.firstPrev} isReverse={true} />
+                    <Images getItem={this.getItem} first={this.firstNext} />
                 </div>
             </div>
         );
