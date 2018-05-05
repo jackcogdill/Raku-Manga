@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 class Info extends Component {
     static propTypes = {
         onItem: PropTypes.func,
-        initialInfo: PropTypes.string,
     };
 
     static defaultProps = {
         onItem: null,
-        initialInfo: null,
     };
 
     constructor(props) {
@@ -56,12 +54,10 @@ class Info extends Component {
     }
 
     render() {
-        const { initialInfo } = this.props;
         const { info } = this.state;
-
         return (
             <div className="raku-info">
-                {info || initialInfo}
+                {info}
             </div>
         );
     }
