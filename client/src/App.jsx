@@ -18,10 +18,11 @@ class App extends Component {
             hasPrev: false,
             hasNext: false,
             n: 0,
+            initialInfo: '',
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Prevent Chrome from remembering scroll position
         // See https://stackoverflow.com/a/38270059/1313757
         if ('scrollRestoration' in window.history) {
@@ -29,7 +30,36 @@ class App extends Component {
         }
 
         const progress = Number(cookies.get('Progress')) || 0;
-        this.update(progress);
+
+        let res;
+        try {
+            res = await this.callApi(progress);
+        }
+        catch (err) {
+            console.log(err);
+            return;
+        }
+
+        const { data, title, header, hasPrev, hasNext } = res;
+        const image = (
+            <img
+                className="strip-img"
+                alt={title}
+                title={title}
+                src={`/images/${data}`}
+                key={progress}
+                n={progress}
+            />
+        );
+
+        this.setState(prevState => ({
+            images: [...prevState.images, image],
+            header,
+            hasPrev,
+            hasNext,
+            n: progress,
+            initialInfo: title,
+        }));
     }
 
     callApi = async (n) => {
@@ -81,10 +111,10 @@ class App extends Component {
     prev = () => this.update(-1);
 
     render() {
-        const { images, hasPrev, hasNext, info } = this.state;
+        const { images, hasPrev, hasNext, initialInfo } = this.state;
         return (
             <div className="App">
-                <Info />
+                <Info initialInfo={initialInfo} />
                 <div className="strip-wrap">
                     <InfiniteScroll
                         hasMore={hasNext}

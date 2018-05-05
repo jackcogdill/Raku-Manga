@@ -46,10 +46,12 @@ class Info extends Component {
     }
 
     render() {
+        const { initialInfo } = this.props;
         const { info } = this.state;
+
         return (
             <div className="strip-info">
-                {info}
+                {info || initialInfo}
             </div>
         );
     }
