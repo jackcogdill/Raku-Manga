@@ -14,7 +14,6 @@ class App extends Component {
         super(props);
         this.state = {
             images: [],
-            header: '',
             hasPrev: false,
             hasNext: false,
             n: 0,
@@ -46,6 +45,7 @@ class App extends Component {
                 className="strip-img"
                 alt={title}
                 title={title}
+                header={header}
                 src={`/images/${data}`}
                 key={progress}
                 n={progress}
@@ -54,11 +54,10 @@ class App extends Component {
 
         this.setState(prevState => ({
             images: [...prevState.images, image],
-            header,
             hasPrev,
             hasNext,
             n: progress,
-            initialInfo: title,
+            initialInfo: header,
         }));
     }
 
@@ -91,6 +90,7 @@ class App extends Component {
                 className="strip-img"
                 alt={title}
                 title={title}
+                header={header}
                 src={`/images/${data}`}
                 key={newN}
                 n={newN}
@@ -99,7 +99,6 @@ class App extends Component {
 
         this.setState(prevState => ({
             images: [...prevState.images, image],
-            header,
             hasPrev,
             hasNext,
             n: newN,

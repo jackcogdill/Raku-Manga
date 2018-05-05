@@ -38,7 +38,7 @@ class Info extends Component {
         }
 
         this.setState({
-            info: el.title,
+            info: el.getAttribute('header'),
             prev: n,
         });
 
