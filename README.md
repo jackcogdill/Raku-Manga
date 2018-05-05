@@ -29,15 +29,14 @@ This tells Webpack development server to proxy our API requests to our API serve
 ## Todo
 
 - [x] Handle out of range (first and last image in directory)
-    - [x] Update UI (no prev/next: gray out and use [/] cursor symbol)
 - [x] Preload surrounding images so UI image change is instant
 - [x] Infinite scroll?
 - [ ] Figure out how to make production version with `yarn build`
 - [ ] Save cookies specific to each manga
-- [x] Add keyboard shortcuts (left, right, `h`, `l`) for next/prev
 - [ ] Add screenshots to readme
 - [x] Detect volume and chapter number and display at the top of the page
     - [x] Use subfolders
 - [x] Put correct image alt text
 - [ ] Use css vendor prefixes
+- [ ] Add loading logo
 
