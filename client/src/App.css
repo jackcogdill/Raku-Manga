@@ -27,8 +27,7 @@ html, body, #root {
 .raku-info {
     position: fixed;
     bottom: 15vh;
-    left: 12vw;
     transform-origin: top left;
-    transform: rotate(-90deg);
+    transform: translateX(-2em) rotate(-90deg);
     font-size: 1em;
 }

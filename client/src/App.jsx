@@ -75,8 +75,8 @@ class App extends Component {
 
         return (
             <div className="App">
-                <Info onItem={onItem} />
                 <div className="raku-wrap">
+                    <Info onItem={onItem} />
                     <Images getItem={getItem} first={firstPrev} isReverse />
                     <Images getItem={getItem} first={firstNext} />
                 </div>
