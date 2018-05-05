@@ -7,14 +7,20 @@ const sort = require('./sort');
 const app = express();
 const port = process.env.PORT || 5000;
 
+const rootDir = argv.dir || argv.R;
+if (rootDir === undefined) {
+    console.log('No root directory specified.');
+    process.exit(1);
+}
+
 // Serve images from specified directory
-app.use('/images', express.static(argv.dir));
+app.use('/images', express.static(rootDir));
 
 const findImages = () => {
     const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
     const pattern = `*@(${formats.join('|')})`;
     const options = {
-        cwd: argv.dir,
+        cwd: rootDir,
         matchBase: true,
     };
     // matchBase is equivalent to **/patt
