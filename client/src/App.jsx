@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch';
 import InfiniteScroll from 'react-infinite-scroller';
 import Cookies from 'universal-cookie';
 
+import Info from './Info';
 import './App.css';
 
 const cookies = new Cookies();
@@ -18,13 +19,9 @@ class App extends Component {
             hasNext: false,
             n: 0,
         };
-        this.handleScroll = this.handleScroll.bind(this);
     }
 
     componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll);
-        window.addEventListener('resize', this.handleScroll);
-
         // Prevent Chrome from remembering scroll position
         // See https://stackoverflow.com/a/38270059/1313757
         if ('scrollRestoration' in window.history) {
@@ -33,17 +30,6 @@ class App extends Component {
 
         const progress = Number(cookies.get('Progress')) || 0;
         this.update(progress);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
-        window.removeEventListener('resize', this.handleScroll);
-    }
-
-    handleScroll() {
-        const doc = document.documentElement || document.body.parentNode || document.body;
-        const scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : doc.scrollTop;
-        console.log(scrollTop);
     }
 
     callApi = async (n) => {
@@ -56,34 +42,40 @@ class App extends Component {
         return body;
     };
 
-    update = (diff) => {
+    update = async (diff) => {
         const { n } = this.state;
         const newN = n + diff;
 
-        this.callApi(newN)
-            .then(res => {
-                const { data, title, header, hasPrev, hasNext } = res;
-                const image = (
-                    <img
-                        className="strip-img"
-                        alt={title}
-                        title={title}
-                        src={`/images/${data}`}
-                        key={newN}
-                    />
-                );
+        let res;
+        try {
+            res = await this.callApi(newN);
+        }
+        catch (err) {
+            console.log(err);
+            return;
+        }
 
-                this.setState(prevState => ({
-                    images: [...prevState.images, image],
-                    header,
-                    hasPrev,
-                    hasNext,
-                    n: newN,
-                }));
+        const { data, title, header, hasPrev, hasNext } = res;
+        const image = (
+            <img
+                className="strip-img"
+                alt={title}
+                title={title}
+                src={`/images/${data}`}
+                key={newN}
+                n={newN}
+            />
+        );
 
-                // cookies.set('Progress', newN, { path: '/' });
-            })
-            .catch(err => console.log(err));
+        this.setState(prevState => ({
+            images: [...prevState.images, image],
+            header,
+            hasPrev,
+            hasNext,
+            n: newN,
+        }));
+
+        // cookies.set('Progress', newN, { path: '/' });
     }
 
     next = () => this.update(1);
@@ -91,18 +83,15 @@ class App extends Component {
     prev = () => this.update(-1);
 
     render() {
-        const { state, prev, next } = this;
-        const { images, hasPrev, hasNext } = state;
-        const height = window.innerHeight;
-
+        const { images, hasPrev, hasNext, info } = this.state;
         return (
             <div className="App">
+                <Info />
                 <div className="strip-wrap">
                     <InfiniteScroll
-                        pageStart={0}
-                        loadMore={next}
                         hasMore={hasNext}
-                        threshold={height}
+                        loadMore={this.next}
+                        threshold={window.innerHeight}
                     >
                         {images}
                     </InfiniteScroll>

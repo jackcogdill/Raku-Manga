@@ -24,6 +24,15 @@ html, body, #root {
     user-select: none;
 }
 
+.strip-info {
+    position: fixed;
+    bottom: 15vh;
+    left: 12vw;
+    transform-origin: top left;
+    transform: rotate(-90deg);
+    font-size: 1em;
+}
+
 .side-button {
     position: fixed;
     top: 25vh;
