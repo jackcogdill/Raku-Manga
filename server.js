@@ -7,20 +7,20 @@ const sort = require('./sort');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const rootDir = argv.dir || argv.R;
-if (rootDir === undefined) {
-    console.log('No root directory specified.');
+const mangaDir = argv.dir || argv.M;
+if (mangaDir === undefined) {
+    console.log('No manga directory specified.');
     process.exit(1);
 }
 
 // Serve images from specified directory
-app.use('/images', express.static(rootDir));
+app.use('/images', express.static(mangaDir));
 
 const findImages = () => {
     const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
     const pattern = `*@(${formats.join('|')})`;
     const options = {
-        cwd: rootDir,
+        cwd: mangaDir,
         matchBase: true,
     };
     // matchBase is equivalent to **/patt
