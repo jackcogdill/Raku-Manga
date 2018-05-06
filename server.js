@@ -7,12 +7,17 @@ const sort = require('./sort');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const mangaDir = argv.dir || argv.M;
+const rootDir = argv.dir || argv.R;
+if (rootDir !== undefined) {
+    // Serve files from specified root directory
+    app.use('/', express.static(rootDir));
+}
+
+const mangaDir = argv['manga-dir'] || argv.M;
 if (mangaDir === undefined) {
     console.log('No manga directory specified.');
     process.exit(1);
 }
-
 // Serve images from specified directory
 app.use('/images', express.static(mangaDir));
 

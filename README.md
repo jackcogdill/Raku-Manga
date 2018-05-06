@@ -10,10 +10,16 @@ cd client
 yarn
 ```
 
-To start the server and client at the same time (from the root of the project)
+To start the server and client at the same time (from the root of the project):
 
 ```
-yarn dev --dir /path/to/manga
+yarn dev -M /path/to/manga
+```
+
+To run the production version of the server:
+
+```
+yarn pro -M /path/to/manga
 ```
 
 ## How this works
@@ -36,7 +42,7 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [x] Put correct image alt text
 - [x] Use css vendor prefixes
 - [x] Add loading logo
-- [ ] Figure out how to make production version with `yarn build`
+- [x] Figure out how to make production version with `yarn build`
 - [ ] Show portal with different manga options
     - [ ] Save cookies specific to each manga
 - [ ] Add login
