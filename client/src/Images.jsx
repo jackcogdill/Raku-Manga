@@ -3,17 +3,8 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 
 class Images extends Component {
-    static fixScroll() {
-        const doc = document.documentElement || document.body.parentNode || document.body;
-        const scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : doc.scrollTop;
-
-        if (scrollTop === 0) {
-            window.scrollTo(0, 1);
-        }
-    }
-
     static propTypes = {
-        first: PropTypes.number.isRequired,
+        init: PropTypes.number.isRequired,
         isReverse: PropTypes.bool,
         getItem: PropTypes.func.isRequired,
     };
@@ -27,9 +18,14 @@ class Images extends Component {
         this.state = {
             images: [],
             hasMore: true,
-            n: props.first,
+            n: props.init,
+            height: 0,
+            top: 0,
         };
+
         this.update = this.update.bind(this);
+        this.wrap = React.createRef();
+        this.loaded = false;
     }
 
     async update() {
@@ -41,35 +37,77 @@ class Images extends Component {
             this.setState({
                 hasMore: false,
             });
-        } else {
-            const { hasPrev, hasNext, image } = item;
+            return;
+        }
+
+        const { hasPrev, hasNext, image } = item;
+        if (isReverse) {
+            const ref = this.wrap.current;
             this.setState(prevState => ({
-                images: isReverse ? [image, ...prevState.images] : [...prevState.images, image],
-                hasMore: isReverse ? hasPrev : hasNext,
-                n: n + (isReverse ? -1 : 1),
+                images: [image, ...prevState.images],
+                hasMore: hasPrev,
+                n: n - 1,
+                height: ref.scrollHeight,
+                top: this.getScrollTop(),
+            }));
+        } else {
+            this.setState(prevState => ({
+                images: [...prevState.images, image],
+                hasMore: hasNext,
+                n: n + 1,
             }));
         }
     }
 
-    render() {
-        const { state, props, update } = this;
-        const { images, hasMore } = state;
-        const { isReverse } = props;
+    getScrollTop() {
+        const doc = document.documentElement || document.body.parentNode || document.body;
+        return (window.pageYOffset !== undefined) ? window.pageYOffset : doc.scrollTop;
+    }
 
-        if (isReverse) {
-            // Do not load previous images infinitely
-            Images.fixScroll();
+    componentDidUpdate() {
+        if (this.props.isReverse) {
+            const ref = this.wrap.current;
+            const { height: oldH, top } = this.state;
+            if (oldH === 0) {
+                return;
+            }
+
+            const scroll = () => {
+                const newH = ref.scrollHeight;
+                if (top) {
+                    this.loaded = true;
+                }
+                window.scrollTo(0, top + newH - oldH);
+            };
+
+            this.loaded
+                ? window.requestAnimationFrame(() => window.requestAnimationFrame(() => window.requestAnimationFrame(scroll)))
+                : window.requestAnimationFrame(scroll);
         }
+    }
+
+    render() {
+        const { images, hasMore, height } = this.state;
+        const { isReverse } = this.props;
+
+        const loader = (
+            <div className="raku-loader" key={0}>
+                {'Loading...'}
+            </div>
+        );
 
         return (
-            <InfiniteScroll
-                isReverse={isReverse}
-                hasMore={hasMore}
-                loadMore={update}
-                threshold={window.innerHeight}
-            >
-                {images}
-            </InfiniteScroll>
+            <div ref={this.wrap}>
+                <InfiniteScroll
+                    isReverse={isReverse}
+                    hasMore={hasMore}
+                    loadMore={this.update}
+                    threshold={window.innerHeight}
+                    loader={isReverse ? height ? loader : null : loader}
+                >
+                    {images}
+                </InfiniteScroll>
+            </div>
         );
     }
 }

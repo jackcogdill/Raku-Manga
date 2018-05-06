@@ -33,12 +33,12 @@ class App extends Component {
         const image = (
             <img
                 className="raku-img"
-                key={n}
                 alt={title}
                 title={title}
                 header={header}
                 src={`/images/${file}`}
                 n={n}
+                key={n}
             />
         );
 
@@ -57,8 +57,8 @@ class App extends Component {
         super(props);
 
         const progress = Number(cookies.get('Progress')) || 0;
-        this.firstPrev = progress;
-        this.firstNext = progress + 1;
+        this.initPrev = progress;
+        this.initNext = progress + 1;
     }
 
     componentDidMount() {
@@ -71,14 +71,14 @@ class App extends Component {
 
     render() {
         const { onItem, getItem } = App;
-        const { firstPrev, firstNext } = this;
+        const { initPrev, initNext } = this;
 
         return (
             <div className="App">
                 <div className="raku-wrap">
                     <Info onItem={onItem} />
-                    <Images getItem={getItem} first={firstPrev} isReverse />
-                    <Images getItem={getItem} first={firstNext} />
+                    <Images getItem={getItem} init={initPrev} isReverse />
+                    <Images getItem={getItem} init={initNext} />
                 </div>
             </div>
         );

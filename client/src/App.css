@@ -2,7 +2,7 @@ html, body, #root {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Ubuntu-Light', Ubuntu, sans-serif;
+    font-family: 'Ubuntu-Light', Ubuntu, Roboto, sans-serif;
     color: #F0F0F0;
 }
 
@@ -28,6 +28,12 @@ html, body, #root {
     position: fixed;
     bottom: 15vh;
     transform-origin: top left;
-    transform: translateX(-2em) rotate(-90deg);
-    font-size: 1em;
+    transform: translateX(-2rem) rotate(-90deg);
+    font-size: 1rem;
+}
+
+.raku-loader {
+    padding: 1rem;
+    font-size: 1rem;
+    text-align: center;
 }
