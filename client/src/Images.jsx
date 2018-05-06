@@ -33,24 +33,24 @@ class Images extends Component {
         this.wrap = React.createRef();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.isReverse) {
             const ref = this.wrap.current;
-            const { height: oldH, top } = this.state;
-            if (oldH === 0) {
-                return;
+            const { height: oldH, top, images } = this.state;
+
+            // Ensure new image was loaded before scrolling
+            if (oldH > 0 && images.length > prevState.images.length) {
+                (function scroll() {
+                    const newH = ref.scrollHeight;
+                    const newPos = (top + newH) - oldH;
+
+                    if (newPos > 0) {
+                        window.scrollTo(0, newPos);
+                    } else {
+                        window.requestAnimationFrame(scroll);
+                    }
+                }());
             }
-
-            (function scroll() {
-                const newH = ref.scrollHeight;
-                const newPos = (top + newH) - oldH;
-
-                if (newPos > 0) {
-                    window.scrollTo(0, newPos);
-                } else {
-                    window.requestAnimationFrame(scroll);
-                }
-            }());
         }
     }
 
