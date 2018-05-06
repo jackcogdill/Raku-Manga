@@ -1,11 +1,10 @@
 {
-    "name": "example-create-react-app-express",
+    "name": "Raku-Manga",
     "version": "1.0.0",
-    "description": "Example on using create-react-app with a Node Express Backend",
+    "description": "Simple server and client for a browser manga reader.",
     "author": {
-        "name": "Esau Silva",
-        "email": "esausilva85@gmail.com",
-        "url": "https://esausilva.com"
+        "name": "Jack Cogdill",
+        "url": "http://jackcogdill.us"
     },
     "license": "MIT",
     "scripts": {
@@ -37,10 +36,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/esausilva/example-create-react-app-express.git"
+        "url": "https://github.com/jackcogdill/Raku-Manga.git"
     },
     "bugs": {
-        "url": "https://github.com/esausilva/example-create-react-app-express/issues"
+        "url": "https://github.com/jackcogdill/Raku-Manga/issues"
     },
     "keywords": [
         "node",
