@@ -37,6 +37,9 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [x] Use css vendor prefixes
 - [x] Add loading logo
 - [ ] Figure out how to make production version with `yarn build`
-- [ ] Save cookies specific to each manga
+- [ ] Show portal with different manga options
+    - [ ] Save cookies specific to each manga
+- [ ] Add login
+    - [ ] Use stateless JWT
 - [ ] Add screenshots to readme
 
