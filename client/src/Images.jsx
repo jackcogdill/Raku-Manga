@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
+import Spinner from 'react-spinkit';
 
 class Images extends Component {
     static getScrollTop() {
@@ -96,7 +97,7 @@ class Images extends Component {
 
         const loader = (
             <div className="raku-loader" key={0}>
-                {'Loading...'}
+                <Spinner name="folding-cube" color="white" />
             </div>
         );
 

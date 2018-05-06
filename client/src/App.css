@@ -33,7 +33,10 @@ html, body, #root {
 }
 
 .raku-loader {
-    padding: 1rem;
-    font-size: 1rem;
-    text-align: center;
+    padding: 2rem;
+    display: grid;
+}
+
+.raku-loader > * {
+    margin: auto;
 }
