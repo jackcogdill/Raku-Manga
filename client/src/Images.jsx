@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 
 class Images extends Component {
+    static getScrollTop() {
+        const doc = document.documentElement || document.body.parentNode || document.body;
+        return (window.pageYOffset !== undefined) ? window.pageYOffset : doc.scrollTop;
+    }
+
     static propTypes = {
         init: PropTypes.number.isRequired,
         isReverse: PropTypes.bool,
@@ -28,6 +33,32 @@ class Images extends Component {
         this.loaded = false;
     }
 
+    componentDidUpdate() {
+        if (this.props.isReverse) {
+            const ref = this.wrap.current;
+            const { height: oldH, top } = this.state;
+            if (oldH === 0) {
+                return;
+            }
+
+            const scroll = () => {
+                const newH = ref.scrollHeight;
+                if (top > 0) {
+                    this.loaded = true;
+                }
+                window.scrollTo(0, (top + newH) - oldH);
+            };
+
+            if (this.loaded) {
+                window.requestAnimationFrame(() =>
+                    window.requestAnimationFrame(() =>
+                        window.requestAnimationFrame(scroll)));
+            } else {
+                window.requestAnimationFrame(scroll);
+            }
+        }
+    }
+
     async update() {
         const { n } = this.state;
         const { getItem, isReverse } = this.props;
@@ -48,7 +79,7 @@ class Images extends Component {
                 hasMore: hasPrev,
                 n: n - 1,
                 height: ref.scrollHeight,
-                top: this.getScrollTop(),
+                top: Images.getScrollTop(),
             }));
         } else {
             this.setState(prevState => ({
@@ -56,33 +87,6 @@ class Images extends Component {
                 hasMore: hasNext,
                 n: n + 1,
             }));
-        }
-    }
-
-    getScrollTop() {
-        const doc = document.documentElement || document.body.parentNode || document.body;
-        return (window.pageYOffset !== undefined) ? window.pageYOffset : doc.scrollTop;
-    }
-
-    componentDidUpdate() {
-        if (this.props.isReverse) {
-            const ref = this.wrap.current;
-            const { height: oldH, top } = this.state;
-            if (oldH === 0) {
-                return;
-            }
-
-            const scroll = () => {
-                const newH = ref.scrollHeight;
-                if (top) {
-                    this.loaded = true;
-                }
-                window.scrollTo(0, top + newH - oldH);
-            };
-
-            this.loaded
-                ? window.requestAnimationFrame(() => window.requestAnimationFrame(() => window.requestAnimationFrame(scroll)))
-                : window.requestAnimationFrame(scroll);
         }
     }
 
@@ -103,7 +107,7 @@ class Images extends Component {
                     hasMore={hasMore}
                     loadMore={this.update}
                     threshold={window.innerHeight}
-                    loader={isReverse ? height ? loader : null : loader}
+                    loader={isReverse && height === 0 ? null : loader}
                 >
                     {images}
                 </InfiniteScroll>
