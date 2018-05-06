@@ -31,12 +31,12 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [x] Handle out of range (first and last image in directory)
 - [x] Preload surrounding images so UI image change is instant
 - [x] Infinite scroll?
-- [ ] Figure out how to make production version with `yarn build`
-- [ ] Save cookies specific to each manga
-- [ ] Add screenshots to readme
 - [x] Detect volume and chapter number and display at the top of the page
     - [x] Use subfolders
 - [x] Put correct image alt text
+- [ ] Figure out how to make production version with `yarn build`
 - [ ] Use css vendor prefixes
-- [ ] Add loading logo
+- [x] Add loading logo
+- [ ] Save cookies specific to each manga
+- [ ] Add screenshots to readme
 
