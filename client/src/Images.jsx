@@ -31,7 +31,6 @@ class Images extends Component {
 
         this.update = this.update.bind(this);
         this.wrap = React.createRef();
-        this.loaded = false;
     }
 
     componentDidUpdate() {
@@ -42,21 +41,16 @@ class Images extends Component {
                 return;
             }
 
-            const scroll = () => {
+            (function scroll() {
                 const newH = ref.scrollHeight;
-                if (top > 0) {
-                    this.loaded = true;
-                }
-                window.scrollTo(0, (top + newH) - oldH);
-            };
+                const newPos = (top + newH) - oldH;
 
-            if (this.loaded) {
-                window.requestAnimationFrame(() =>
-                    window.requestAnimationFrame(() =>
-                        window.requestAnimationFrame(scroll)));
-            } else {
-                window.requestAnimationFrame(scroll);
-            }
+                if (newPos > 0) {
+                    window.scrollTo(0, newPos);
+                } else {
+                    window.requestAnimationFrame(scroll);
+                }
+            }());
         }
     }
 
