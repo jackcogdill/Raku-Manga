@@ -42,9 +42,10 @@ class Images extends Component {
             if (oldH > 0 && images.length > prevState.images.length) {
                 (function scroll() {
                     const newH = ref.scrollHeight;
-                    const newPos = (top + newH) - oldH;
+                    const diff = newH - oldH;
 
-                    if (newPos > 0) {
+                    if (diff > 0) {
+                        const newPos = top + diff;
                         window.scrollTo(0, newPos);
                     } else {
                         window.requestAnimationFrame(scroll);
