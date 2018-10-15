@@ -18,31 +18,51 @@ if (mangaDir === undefined) {
   console.log('No manga directory specified.');
   process.exit(1);
 }
+
 // Serve images from specified directory
 app.use('/images', express.static(mangaDir));
+const global = {};
+global.images = {};
 
-const findImages = () => {
+const options = {
+  cwd: mangaDir,
+};
+glob('*', options, (err, files) => {
+  global.mangas = files;
+});
+
+const findImages = dir => {
   const formats = ['jpg', 'jpeg', 'gif', 'png', 'tiff', 'bmp'];
   const pattern = `*@(${formats.join('|')})`;
   const options = {
-    cwd: mangaDir,
+    cwd: dir,
     matchBase: true,
   };
   // matchBase is equivalent to **/patt
 
   glob(pattern, options, (err, files) => {
     files.sort(sort.numCompare);
-    global.files = files;
+    global.images[dir] = files;
   });
 };
 
-findImages();
-const inbounds = n => n >= 0 && n < global.files.length;
+app.get('/api/list-manga', (req, res) => {
+  res.send({
+    mangas: global.mangas,
+  });
+});
+
+app.get('/api/select-manga', (req, res) => {
+  const { manga } = req.query;
+
+  findImages(manga);
+});
 
 app.get('/api/manga', (req, res) => {
-  const { n: strN } = req.query;
+  const { manga, n: strN } = req.query;
   const n = Number(strN);
 
+  const inbounds = n => n >= 0 && n < global.images[manga].length;
   if (!inbounds(n)) {
     res.send({
       error: `No such file index: ${n}`,
@@ -50,7 +70,7 @@ app.get('/api/manga', (req, res) => {
     return;
   }
 
-  const image = global.files[n];
+  const image = global.images[manga][n];
   const p = path.parse(image);
   const header = p.dir ? `${p.dir}/${p.name}` : p.name;
 

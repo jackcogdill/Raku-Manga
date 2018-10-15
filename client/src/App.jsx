@@ -5,13 +5,14 @@ import Cookies from 'universal-cookie';
 
 import Info from './Info';
 import Images from './Images';
+import Portal from './Portal';
 import './App.css';
 
 const cookies = new Cookies();
 
 class App extends Component {
-  static callApi = async (n) => {
-    const response = await fetch(`/api/manga?n=${n}`);
+  static callApi = async (path) => {
+    const response = await fetch(path);
     const body = await response.json();
 
     if (response.status !== 200) throw Error(body.message);
@@ -23,7 +24,7 @@ class App extends Component {
   static getItem = async (n) => {
     let res;
     try {
-      res = await App.callApi(n);
+      res = await App.callApi(`/api/manga?n=${n}`);
     } catch (err) {
       console.log(err);
       return null;
@@ -47,6 +48,17 @@ class App extends Component {
       hasNext,
       image,
     };
+  }
+
+  static getMangas = async () => {
+    let res;
+    try {
+      res = await App.callApi('/api/list-mangas');
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+    return res.mangas;
   }
 
   static onItem(n) {
@@ -73,12 +85,14 @@ class App extends Component {
     const { onItem, getItem } = App;
     const { initPrev, initNext } = this;
 
+    //    <Info onItem={onItem} />
+    //    <Images getItem={getItem} init={initPrev} isReverse />
+    //    <Images getItem={getItem} init={initNext} />
+
     return (
       <div className="App">
         <div className="raku-wrap">
-          <Info onItem={onItem} />
-          <Images getItem={getItem} init={initPrev} isReverse />
-          <Images getItem={getItem} init={initNext} />
+          <Portal getMangas={this.getMangas} />
         </div>
       </div>
     );
