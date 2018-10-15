@@ -48,4 +48,5 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [ ] Add login
     - [ ] Use stateless JWT
 - [ ] Add screenshots to readme
+- [ ] Check aspect ratio of image and make wide images span the whole page
 
