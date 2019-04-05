@@ -34,6 +34,30 @@ This tells Webpack development server to proxy our API requests to our API serve
 
 ## Todo
 
+- [ ] Show portal with different manga options
+    - [ ] Save cookies specific to each manga
+- [ ] Add screenshots to readme
+- [ ] Check aspect ratio of image and make wide images span the whole page
+
+## Ideas
+
+- [ ] `yarn pro -M dir`
+    - [ ] `dir` contains all manga subdirs
+- [ ] Use `Router` for home page, and each specific manga
+
+- [ ] (very subtle) top bar with: back button, current comic info, nav buttons (jump to specific chapter, comic, etc)
+    - [ ] Front end logic for jumping: should reload and preload 10+- the current comic
+
+### Styling
+
+- [ ] Set max-width for content width
+- [ ] Set (mobile) max-width: content full width
+
+- [ ] Add login
+    - [ ] Use stateless JWT
+
+## Completed
+
 - [x] Handle out of range (first and last image in directory)
 - [x] Preload surrounding images so UI image change is instant
 - [x] Infinite scroll?
@@ -43,10 +67,3 @@ This tells Webpack development server to proxy our API requests to our API serve
 - [x] Use css vendor prefixes
 - [x] Add loading logo
 - [x] Figure out how to make production version with `yarn build`
-- [ ] Show portal with different manga options
-    - [ ] Save cookies specific to each manga
-- [ ] Add login
-    - [ ] Use stateless JWT
-- [ ] Add screenshots to readme
-- [ ] Check aspect ratio of image and make wide images span the whole page
-
