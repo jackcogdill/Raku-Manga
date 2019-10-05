@@ -35,7 +35,7 @@ This tells Webpack development server to proxy our API requests to our API serve
 ## Todo
 
 - [ ] Show portal with different manga options
-    - [ ] Save cookies specific to each manga
+    - [ ] Save manga-specific progress on server
 - [ ] Add screenshots to readme
 - [ ] Check aspect ratio of image and make wide images span the whole page
 
